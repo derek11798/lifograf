@@ -7,7 +7,6 @@ const ConfirmEmail = () => {
     const [confirmEmailApiResponse, setConfirmEmailApiResponse] = useState(false)
     const navigate = useNavigate()
     const {id} = useParams();
-    const{path} = useMatch()
     useEffect(()=>{
       confirmEmailApi()},[])
 
