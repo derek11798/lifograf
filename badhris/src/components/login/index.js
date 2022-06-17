@@ -6,42 +6,42 @@ import validator from "validator";
 import axios from "axios";
 import facebook from "../../images/facebook.png";
 import google from "../../images/google.png";
+import { BrowserRouter as Router, Route, Link, NavLink, Routes, useMatch } from 'react-router-dom'
 
 const Login = () => {
   const [emailValidation, setEmailValidation] = useState(false);
-  const [passwordValidation, setPasswordValidation] = useState(false);
-  const [confirmpasswordValidation, setConfirmPasswordValidation] =
-    useState(false);
+  // const [passwordValidation, setPasswordValidation] = useState(false);
+  // const [confirmpasswordValidation, setConfirmPasswordValidation] =
+  //   useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+  // const [confirmPassword, setConfirmPassword] = useState();
 
   function handelChange() {
     setEmail(document.getElementById("username").value);
     setPassword(document.getElementById("password").value);
-    setConfirmPassword(document.getElementById("confirm-password").value);
-    console.log(typeof password);
+    // setConfirmPassword(document.getElementById("confirm-password").value);
+    console.log("password & email", email,password);
   }
 
   function onSubmit() {
-    setConfirmPasswordValidation(
-      validator.equals(password, confirmPassword) ? false : true
-    );
+    // setConfirmPasswordValidation(
+    //   validator.equals(password, confirmPassword) ? false : true
+    // );
     setEmailValidation(validator.isEmail(email) ? false : true);
-    setPasswordValidation(validator.isStrongPassword(password) ? false : true);
-    console.log(typeof password);
+    // setPasswordValidation(validator.isStrongPassword(password) ? false : true);
     if (
-      validator.equals(password, confirmPassword) &&
-      validator.isEmail(email) &&
-      validator.isStrongPassword(password)
+      // validator.equals(password, confirmPassword) &&
+      validator.isEmail(email)
+      // validator.isStrongPassword(password)
     ) {
-      signUpApi(email, password, confirmPassword);
+      loginApi(email, password);
       console.log("fetch API");
     }
   }
 
-  function signUpApi(email, password, confirmPassword) {
-    console.log(email, password, confirmPassword);
+  function loginApi(email, password) {
+    console.log(email, password);
     // const body= {
     //   emailid : email,
     //   password : password,
@@ -52,11 +52,10 @@ const Login = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         emailid: email,
-        password: password,
-        cpassword: confirmPassword,
+        password: password
       }),
     };
-    fetch("https://lifograf.com/lg_api/signup", requestOptions)
+    fetch("https://lifograf.com/lg_api/login", requestOptions)
       .then((respose) => {
         console.log(respose);
       })
@@ -75,7 +74,7 @@ const Login = () => {
                 <div className="mb-4">
                   <h3>WELCOME BACK !</h3>
                   <p className="mb-4">
-                    Dont Have An Account &nbsp;<a href="#"> Sign Up</a>{" "}
+                    Dont Have An Account &nbsp;<Link to = '/'>Sign Up</Link>
                   </p>
                 </div>
                 <span className="d-block text-center my-8 text-muted">
@@ -122,11 +121,11 @@ const Login = () => {
                       name="password"
                     />
                   </div>
-                  <div className="validation-error">
+                  {/* <div className="validation-error">
                     {passwordValidation && (
                       <span>Enter a proper password !!!</span>
                     )}
-                  </div>
+                  </div> */}
                   {/* <span classNameName="form-group last">Confirm Password</span>
                   <div className="form-group last mb-4">
                     <label for="password"></label>

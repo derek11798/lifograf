@@ -6,6 +6,7 @@ import validator from "validator";
 import axios from "axios";
 import facebook from "../../images/facebook.png";
 import google from "../../images/google.png";
+import { BrowserRouter as Router, Route, Link, NavLink, Routes, useMatch } from 'react-router-dom'
 
 
 const Signup = () => {
@@ -76,7 +77,7 @@ const Signup = () => {
                   <div className="mb-4">
                     <h3>WELCOME !</h3>
                     <p className="mb-4">
-                      Already Have An Account &nbsp;<a href="#"> Log In</a>{" "}
+                      Already Have An Account &nbsp;<Link to = '/login'>Log In</Link>
                     </p>
                   </div>
                   <span className="d-block text-center my-8 text-muted">
