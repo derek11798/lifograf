@@ -9,13 +9,14 @@ import "../src/fonts/icomoon/selection.json"
 import { BrowserRouter as Router, Route, Link, NavLink, Routes, useMatch } from 'react-router-dom'
 import ConfirmEmail from './components/confirmEmail';  
 import Login from './components/login';
+import SignInSide from './components/muisignup';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const MainApp = () => {
   return(
     <Router>
       <Routes>  
-         <Route exact path="/" element={<Signup/>} />  
+         <Route exact path="/" element={<SignInSide/>} />  
          <Route path="/login" element={<Login/>} />
          <Route path= "/confirmemail/:id" element={<ConfirmEmail/>} />    
       </Routes>

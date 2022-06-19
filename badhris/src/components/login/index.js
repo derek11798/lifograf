@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import "../../fonts/icomoon/selection.json";
 import bg_1 from "../../images/bg_2.svg";
