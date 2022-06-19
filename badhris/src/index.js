@@ -9,7 +9,9 @@ import "../src/fonts/icomoon/selection.json"
 import { BrowserRouter as Router, Route, Link, NavLink, Routes, useMatch } from 'react-router-dom'
 import ConfirmEmail from './components/confirmEmail';  
 import Login from './components/login';
-import SignInSide from './components/muisignup';
+import SignInSide from './components/mui-signup';
+import LogInSide from './components/mui-login';
+import ConfirmEmailSide from './components/mui-confirmemail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const MainApp = () => {
@@ -17,8 +19,8 @@ const MainApp = () => {
     <Router>
       <Routes>  
          <Route exact path="/" element={<SignInSide/>} />  
-         <Route path="/login" element={<Login/>} />
-         <Route path= "/confirmemail/:id" element={<ConfirmEmail/>} />    
+         <Route path="/login" element={<LogInSide/>} />
+         <Route path= "/confirmemail/:id" element={<ConfirmEmailSide/>} />    
       </Routes>
     </Router> 
   )
