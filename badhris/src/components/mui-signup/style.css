@@ -1,0 +1,23 @@
+body {
+    background-color: #000;
+  }
+  
+  .block {
+    height: 38px;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: 400% 20px 400%;
+    grid-template-rows: 1fr;
+    background-color: rgb(255, 255, 255);
+  }
+  
+  hr {
+    margin: auto 5px;
+    border: 0.8px solid rgb(150, 150, 150);
+  }
+  
+  .text {
+    margin: auto 0;
+    font-size: 14px;
+    color: rgb(175, 175, 175);
+  }

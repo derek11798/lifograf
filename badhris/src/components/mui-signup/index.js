@@ -19,6 +19,11 @@ import { border, margin } from "@mui/system";
 import validator from "validator";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+// import { GoogleLogin } from "react-google-login";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import { red } from "@mui/material/colors";
+import "./style.css";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -29,7 +34,8 @@ const theme = createTheme();
 const SignInSide = () => {
   const [emailValidation, setEmailValidation] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
-  const [confirmpasswordValidation, setConfirmPasswordValidation] = useState(false);
+  const [confirmpasswordValidation, setConfirmPasswordValidation] =
+    useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -37,7 +43,7 @@ const SignInSide = () => {
   const [checkBox, setCheckBox] = useState(false);
   const [verificationEmailSent, setEmailSent] = useState(false);
   const [EmailAlert, setEmailAlert] = useState(false);
-  
+
   const onSubmit = () => {
     setEmailAlreadyExist(false);
     setConfirmPasswordValidation(
@@ -54,6 +60,10 @@ const SignInSide = () => {
       signUpApi(email, password, confirmPassword);
       console.log("fetch API");
     }
+  };
+
+  const responseGoogle = (response) => {
+    console.log(response);
   };
 
   function signUpApi(email, password, confirmPassword) {
@@ -92,177 +102,223 @@ const SignInSide = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+    <GoogleOAuthProvider clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com">
+      <ThemeProvider theme={theme}>
+        <Grid container component="main" sx={{ height: "100vh", ml: 10 }}>
+          <CssBaseline />
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={4}
+            component={Paper}
+            elevation={0}
+            square
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
-            <Typography component="h1" variant="h3">
-              WELCOME !
-            </Typography>
-            <Grid item sx={{ margin: 2 }}>
-              <Typography component="h3" variant="body1">
-                Already have an account? &nbsp;<Link to="/login">Sign Up</Link>
-              </Typography>
-            </Grid>
-            <Grid item sx={{ margin: 2 }}>
-              <Typography component="h3" variant="h5">
-                Sign up with
-              </Typography>
-            </Grid>
             <Box
               sx={{
+                my: 8,
+                mx: 4,
                 display: "flex",
-                margin: 2,
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              <Grid
-                item
+              {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar> */}
+              <Typography component="h1" variant="h3">
+                WELCOME !
+              </Typography>
+              <Grid item sx={{ margin: 2 }}>
+                <Typography component="h3" variant="body1">
+                  Already have an account? &nbsp;<Link to="/login">Login</Link>
+                </Typography>
+              </Grid>
+              <Grid item sx={{ margin: 2 }}>
+                <Typography component="h3" variant="h5">
+                  Sign up with
+                </Typography>
+              </Grid>
+              <Box
                 sx={{
-                  border: 3,
-                  borderRadius: 2,
-                  borderColor: "#789ADE",
                   display: "flex",
-                  marginRight: 20,
+                  margin: 2,
                 }}
               >
-                <img src={google} />
-              </Grid>
-              <Grid
-                item
-                sx={{
-                  border: 3,
-                  borderRadius: 2,
-                  borderColor: "#789ADE",
-                  display: "flex",
-                }}
-              >
-                <img src={facebook} />
-              </Grid>
-            </Box>
-
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                error={emailValidation || EmailAlreadyExist}
-                helperText={
-                  emailValidation
-                    ? "Enter a proper email"
-                    : "" || EmailAlreadyExist
-                    ? `${EmailAlreadyExist}`
-                    : ""
-                }
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                error={passwordValidation}
-                helperText={passwordValidation ? "Enter a strong password" : ""}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                type="password"
-                id="confirmPassword"
-                label="Confirm Password"
-                name="confirmPassword"
-                error={confirmpasswordValidation}
-                helperText={
-                  confirmpasswordValidation ? "Password does not match" : ""
-                }
-                // autoComplete="confirmPassword"
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                }}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="remember"
-                    color="primary"
-                    onChange={() => {
-                      setCheckBox(!checkBox);
+                <Grid
+                  item
+                  sx={{
+                    border: 3,
+                    borderRadius: 2,
+                    borderColor: "#789ADE",
+                    display: "flex",
+                    marginRight: 20,
+                  }}
+                >
+                  <img src={google} />
+                  {/* <GoogleLogin
+                  clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com"
+                  render={renderProps => (
+                    <img src={google} onClick={renderProps.onClick}/>
+                  )}
+                  buttonText="Login"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={"single_host_origin"}
+                /> */}
+                  {/* <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      console.log(credentialResponse);
                     }}
-                  />
-                }
-                label="I agree to the terms of service"
-              />
-              <Button
-                // type="submit"
-                disabled={checkBox ? false : true}
-                fullWidth
-                variant="contained"
-                onClick={() => {
-                  onSubmit();
-                }}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign UP
-              </Button>
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                    useOneTap
+                  /> */}
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    border: 3,
+                    borderRadius: 2,
+                    borderColor: "#789ADE",
+                    display: "flex",
+                  }}
+                >
+                  <img src={facebook} />
+                  {/* <GoogleLogin
+                  clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com"
+                  render={renderProps => (
+                    <img src={facebook} onClick={renderProps.onClick}/>
+                  )}
+                  buttonText="Login"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={"single_host_origin"}
+                /> */}
+                </Grid>
+              </Box>
+              <Box sx={{width : 400}}>
+                <div className="block">
+                  <hr />
+                  <div className="text">OR</div>
+                  <hr />
+                </div>
+              </Box>
+
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  error={emailValidation || EmailAlreadyExist}
+                  helperText={
+                    emailValidation
+                      ? "Enter a proper email"
+                      : "" || EmailAlreadyExist
+                      ? `${EmailAlreadyExist}`
+                      : ""
+                  }
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  error={passwordValidation}
+                  helperText={
+                    passwordValidation
+                      ? "Password must has at least 8 characters that include at least 1 lowercase character, 1 uppercase characters, 1 number, and 1 special character in" +
+                        "(!@#$%^&*)"
+                      : ""
+                  }
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  type="password"
+                  id="confirmPassword"
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  error={confirmpasswordValidation}
+                  helperText={
+                    confirmpasswordValidation ? "Password does not match" : ""
+                  }
+                  // autoComplete="confirmPassword"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="remember"
+                      color="primary"
+                      onChange={() => {
+                        setCheckBox(!checkBox);
+                      }}
+                    />
+                  }
+                  label="I agree to the terms of service"
+                />
+                <Button
+                  // type="submit"
+                  disabled={checkBox ? false : true}
+                  fullWidth
+                  variant="contained"
+                  onClick={() => {
+                    onSubmit();
+                  }}
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign UP
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={8}
-        >
-          <img src={bg_1} />
-        </Grid>
-        <Grid item xs={12} sm={8} md={4}>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={EmailAlert}
-            autoHideDuration={4000}
-            onClose={() => {
-              setEmailAlert(false);
-            }}
-          >
-            <Alert
+          </Grid>
+          <Grid item xs={false} sm={4} md={8} sx={{ mt: 10 }}>
+            <img src={bg_1} />
+          </Grid>
+          <Grid item xs={12} sm={8} md={4}>
+            <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              open={EmailAlert}
+              autoHideDuration={4000}
               onClose={() => {
                 setEmailAlert(false);
               }}
-              severity="info"
-              sx={{ width: "100%" }}
             >
-              {verificationEmailSent}
-            </Alert>
-          </Snackbar>
+              <Alert
+                onClose={() => {
+                  setEmailAlert(false);
+                }}
+                severity="info"
+                sx={{ width: "100%" }}
+              >
+                {verificationEmailSent}
+              </Alert>
+            </Snackbar>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 };
 

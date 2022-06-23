@@ -19,6 +19,8 @@ import { border, margin } from "@mui/system";
 import validator from "validator";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import "../mui-signup/style.css";
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -90,7 +92,7 @@ const LogInSide = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: "100vh", ml : 10 }}>
         <CssBaseline />
         <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square>
           <Box
@@ -106,7 +108,7 @@ const LogInSide = () => {
               <LockOutlinedIcon />
             </Avatar> */}
             <Typography component="h1" variant="h3">
-              WELCOME Back !
+              WELCOME BACK !
             </Typography>
             <Grid item sx={{ margin: 2 }}>
               <Typography component="h3" variant="body1">
@@ -148,6 +150,13 @@ const LogInSide = () => {
                 <img src={facebook} />
               </Grid>
             </Box>
+            <Box sx={{width : 400}}>
+                <div className="block">
+                  <hr />
+                  <div className="text">OR</div>
+                  <hr />
+                </div>
+              </Box>
 
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
@@ -233,7 +242,7 @@ const LogInSide = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={false} sm={4} md={8}>
+        <Grid item xs={false} sm={4} md={8} sx={{mt : 10}}>
           <img src={bg_1} />
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
