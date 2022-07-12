@@ -1,5 +1,5 @@
 body {
-    background-color: #000;
+    /* background-color: #000; */
   }
   
   .block {
@@ -20,4 +20,8 @@ body {
     margin: auto 0;
     font-size: 14px;
     color: rgb(175, 175, 175);
+  }
+  .img {
+    width: 55px;
+    height: 55px;
   }

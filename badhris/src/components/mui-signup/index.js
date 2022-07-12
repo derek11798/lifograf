@@ -22,6 +22,7 @@ import MuiAlert from "@mui/material/Alert";
 // import { GoogleLogin } from "react-google-login";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from '@react-oauth/google';
 import { red } from "@mui/material/colors";
 import "./style.css";
 
@@ -62,9 +63,21 @@ const SignInSide = () => {
     }
   };
 
-  const responseGoogle = (response) => {
-    console.log(response);
+  const googleAuthentication = (token) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        authToken : token
+      }),
+    };
+    fetch("https://lifograf.com/lg_api/gAuth", requestOptions)
+      .then((response) => console.log(response));
   };
+
+  
+
+ 
 
   function signUpApi(email, password, confirmPassword) {
     console.log(email, password, confirmPassword);
@@ -100,6 +113,16 @@ const SignInSide = () => {
         console.log(e);
       });
   }
+
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log(tokenResponse)
+      googleAuthentication(tokenResponse.access_token);
+
+    },
+    // flow: 'auth-code',
+
+  });
 
   return (
     <GoogleOAuthProvider clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com">
@@ -149,14 +172,14 @@ const SignInSide = () => {
                 <Grid
                   item
                   sx={{
-                    border: 3,
-                    borderRadius: 2,
-                    borderColor: "#789ADE",
+                    // border: 3,
+                    // borderRadius: 2,
+                    // borderColor: "#789ADE",
                     display: "flex",
                     marginRight: 20,
                   }}
                 >
-                  <img src={google} />
+                  {/* <img src={google} onClick={()=>login()} /> */}
                   {/* <GoogleLogin
                   clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com"
                   render={renderProps => (
@@ -167,15 +190,22 @@ const SignInSide = () => {
                   onFailure={responseGoogle}
                   cookiePolicy={"single_host_origin"}
                 /> */}
-                  {/* <GoogleLogin
+                  <GoogleLogin
                     onSuccess={(credentialResponse) => {
-                      console.log(credentialResponse);
+                      console.log(credentialResponse.credential);
+                      const token = credentialResponse.credential.split(".")
+                      console.log(token[0])
+                      googleAuthentication(credentialResponse.credential);
                     }}
                     onError={() => {
                       console.log("Login Failed");
                     }}
                     useOneTap
-                  /> */}
+                    type="icon" 
+                    shape="pill"
+                    logo_alignment="center"
+                    size="large"
+                  />
                 </Grid>
                 <Grid
                   item
