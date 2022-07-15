@@ -21,20 +21,24 @@ import LogInSide from "./components/mui-login";
 import ConfirmEmailSide from "./components/mui-confirmemail";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Home from "./components/mui-home";
+import store from "../src/redux/store/store";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const MainApp = () => {
   return (
-    <GoogleOAuthProvider clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com">
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<SignInSide />} />
-          <Route path="/login" element={<LogInSide />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/confirmemail/:id" element={<ConfirmEmailSide />} />
-        </Routes>
-      </Router>
-    </GoogleOAuthProvider>
+    <Provider store={store}>
+      <GoogleOAuthProvider clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com">
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<SignInSide />} />
+            <Route path="/login" element={<LogInSide />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/confirmemail/:id" element={<ConfirmEmailSide />} />
+          </Routes>
+        </Router>
+      </GoogleOAuthProvider>
+    </Provider>
   );
 };
 root.render(<MainApp />);

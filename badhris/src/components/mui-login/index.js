@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { GoogleLogin } from "@react-oauth/google";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -20,6 +21,9 @@ import validator from "validator";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import "../mui-signup/style.css";
+import { useParams, useNavigate, useMatch } from 'react-router-dom';
+import { connect } from "react-redux";
+import { authTokenAction, userIdAction } from "../../redux/actions";
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -28,7 +32,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const theme = createTheme();
 
-const LogInSide = () => {
+
+
+const LogInSide = (props) => {
   const [emailValidation, setEmailValidation] = useState(false);
 //   const [passwordValidation, setPasswordValidation] = useState(false);
 //   const [confirmpasswordValidation, setConfirmPasswordValidation] =
@@ -41,9 +47,17 @@ const LogInSide = () => {
 //   const [verificationEmailSent, setEmailSent] = useState(false);
   const [loginResponse, setLoginResponse] = useState();
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [redirectToHome, setRedirectToHome] = useState(false);
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    if(redirectToHome){
+        navigate("/home");
+        setRedirectToHome(false)
+    }
+  }, [redirectToHome]);
 
-  const onSubmit = ()=> {
+  const onSubmit = ()=> { 
     // setConfirmPasswordValidation(
     //   validator.equals(password, confirmPassword) ? false : true
     // );
@@ -59,8 +73,33 @@ const LogInSide = () => {
     }
   }
 
+  const googleAuthentication = (token) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        authToken : token
+      }),
+    };
+    fetch("https://lifograf.com/lg_api/gAuth", requestOptions)
+    .then((response) => response.json())
+    .then((responseJSON) => {
+      
+        if(responseJSON.error){
+          const responseMessage = (responseJSON.message).split("-")
+          console.log(responseMessage[0])
+        }
+        else{
+          setRedirectToHome(true)
+          props.authTokenAction(responseJSON.usrToken)
+          props.userIdAction(responseJSON.usrId)
+  
+        }
+        })
+  };
+
   const loginApi = (email, password)=> {
-    console.log(email, password);
+    // console.log(email, password);
     // const body= {
     //   emailid : email,
     //   password : password,
@@ -83,6 +122,12 @@ const LogInSide = () => {
         setLoginResponse(responseMessage[0])
         setInvalidCredentials(true)
         console.log(responseMessage[0])
+      }
+      else{
+        setRedirectToHome(true)
+        props.authTokenAction(responseJSON.usrToken)
+        props.userIdAction(responseJSON.usrId)
+
       }
       })
       .catch((e) => {
@@ -129,14 +174,27 @@ const LogInSide = () => {
               <Grid
                 item
                 sx={{
-                  border: 3,
-                  borderRadius: 2,
-                  borderColor: "#789ADE",
+                  // border: 3,
+                  // borderRadius: 2,
+                  // borderColor: "#789ADE",
                   display: "flex",
                   marginRight: 20,
                 }}
               >
-                <img src={google} />
+                {/* <img src={google} /> */}
+                <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      googleAuthentication(credentialResponse.credential);
+                    }}
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                    useOneTap
+                    type="icon" 
+                    shape="pill"
+                    logo_alignment="center"
+                    size="large"
+                  />
               </Grid>
               <Grid
                 item
@@ -270,4 +328,10 @@ const LogInSide = () => {
   );
 };
 
-export default LogInSide;
+const mapStateToProp = state =>{
+  return {
+  authToken : state.commonState.authToken
+  }
+}
+
+export default connect(mapStateToProp, {authTokenAction, userIdAction}) (LogInSide);

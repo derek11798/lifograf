@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,12 +19,14 @@ import { border, margin } from "@mui/system";
 import validator from "validator";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-// import { GoogleLogin } from "react-google-login";
+import { useParams, useNavigate, useMatch } from 'react-router-dom';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from '@react-oauth/google';
 import { red } from "@mui/material/colors";
 import "./style.css";
+import { connect } from "react-redux";
+import { authTokenAction, userIdAction } from "../../redux/actions";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -32,7 +34,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const theme = createTheme();
 
-const SignInSide = () => {
+const SignInSide = (props) => {
   const [emailValidation, setEmailValidation] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
   const [confirmpasswordValidation, setConfirmPasswordValidation] =
@@ -44,6 +46,16 @@ const SignInSide = () => {
   const [checkBox, setCheckBox] = useState(false);
   const [verificationEmailSent, setEmailSent] = useState(false);
   const [EmailAlert, setEmailAlert] = useState(false);
+  const [redirectToHome, setRedirectToHome] = useState(false);
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if(redirectToHome){
+        navigate("/home");
+        setRedirectToHome(false)
+    }
+  }, [redirectToHome]);
 
   const onSubmit = () => {
     setEmailAlreadyExist(false);
@@ -72,12 +84,21 @@ const SignInSide = () => {
       }),
     };
     fetch("https://lifograf.com/lg_api/gAuth", requestOptions)
-      .then((response) => console.log(response));
-  };
-
+    .then((response) => response.json())
+    .then((responseJSON) => {
+      
+        if(responseJSON.error){
+          const responseMessage = (responseJSON.message).split("-")
+          console.log(responseMessage[0])
+        }
+        else{
+          setRedirectToHome(true)
+          props.authTokenAction(responseJSON.usrToken)
+          props.userIdAction(responseJSON.usrId)
   
-
- 
+        }
+        })
+  };
 
   function signUpApi(email, password, confirmPassword) {
     console.log(email, password, confirmPassword);
@@ -106,6 +127,9 @@ const SignInSide = () => {
           const responseMessage = responseJSON.message;
           setEmailSent(responseMessage);
           setEmailAlert(true);
+          setRedirectToHome(true)
+          props.authTokenAction(responseJSON.usrToken)
+          props.userIdAction(responseJSON.usrId)
           console.log(responseMessage);
         }
       })
@@ -192,9 +216,6 @@ const SignInSide = () => {
                 /> */}
                   <GoogleLogin
                     onSuccess={(credentialResponse) => {
-                      console.log(credentialResponse.credential);
-                      const token = credentialResponse.credential.split(".")
-                      console.log(token[0])
                       googleAuthentication(credentialResponse.credential);
                     }}
                     onError={() => {
@@ -351,5 +372,10 @@ const SignInSide = () => {
     </GoogleOAuthProvider>
   );
 };
+const mapStateToProp = state =>{
+  return {
+  authToken : state.commonState.authToken
+  }
+}
 
-export default SignInSide;
+export default connect(mapStateToProp,{authTokenAction, userIdAction}) (SignInSide);
