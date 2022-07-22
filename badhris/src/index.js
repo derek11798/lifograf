@@ -23,6 +23,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Home from "./components/mui-home";
 import store from "../src/redux/store/store";
 import { Provider } from "react-redux";
+import About from "./components/mui-about";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const MainApp = () => {
@@ -34,6 +35,7 @@ const MainApp = () => {
             <Route exact path="/" element={<SignInSide />} />
             <Route path="/login" element={<LogInSide />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/confirmemail/:id" element={<ConfirmEmailSide />} />
           </Routes>
         </Router>

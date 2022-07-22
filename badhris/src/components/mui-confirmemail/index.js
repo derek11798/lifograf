@@ -140,9 +140,9 @@ const ConfirmEmailSide = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh", ml : 10 }}>
+      <Grid container /*component="main" sx={{ height: "100vh", ml : 10 }}*/>
         <CssBaseline />
-        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square>
+        <Grid item xs={12} sm={4} md={4} component={Paper} elevation={0} square>
           <Box
             sx={{
               my: 8,
@@ -158,23 +158,23 @@ const ConfirmEmailSide = () => {
             <Typography component="h1" variant="h3">
               WELCOME Back !
             </Typography>
-            <Grid item sx={{ margin: 2 }}>
+            {/* <Grid item sx={{ margin: 2 }}> */}
               <Typography component="h3" variant="body1">
                 Don't have an account? &nbsp;<Link to="/">Sign Up</Link>
               </Typography>
-            </Grid>
-            <Grid item sx={{ margin: 2 }}>
+            {/* </Grid> */}
+            {/* <Grid item sx={{ margin: 2 }}> */}
               <Typography component="h3" variant="h5">
                 Login with
               </Typography>
-            </Grid>
+            {/* </Grid> */}
             <Box
               sx={{
                 display: "flex",
                 margin: 2,
               }}
             >
-              <Grid
+              <Box
                 item
                 sx={{
                   border: 3,
@@ -185,8 +185,8 @@ const ConfirmEmailSide = () => {
                 }}
               >
                 <img src={google} />
-              </Grid>
-              <Grid
+              </Box>
+              {/* <Grid
                 item
                 sx={{
                   border: 3,
@@ -194,9 +194,9 @@ const ConfirmEmailSide = () => {
                   borderColor: "#789ADE",
                   display: "flex",
                 }}
-              >
+              > */}
                 <img src={facebook} />
-              </Grid>
+              {/* </Grid> */}
             </Box>
             <Box sx={{width : 400}}>
                 <div className="block">
@@ -267,9 +267,9 @@ const ConfirmEmailSide = () => {
                   }
                   label="Remember me"
                 />
-                <Grid item sx={{ marginLeft: 18, marginTop: 1 }}>
+                <Box item sx={{ marginLeft: 18, marginTop: 1 }}>
                   <Link to="#">Forgot password?</Link>
-                </Grid>
+                </Box>
               </Box>
               <Button
                 // type="submit"
@@ -287,7 +287,13 @@ const ConfirmEmailSide = () => {
           </Box>
         </Grid>
         <Grid item xs={false} sm={4} md={8} sx={{mt : 10}}>
+        <Box
+          component={Grid}
+          item
+          display={{ xs: "none", sm : "flex", sx : "flex" }}
+        >
           <img src={bg_1} />
+          </Box>
         </Grid>
         <Grid item xs={12} sm={8} md={4}>
           <Snackbar

@@ -151,12 +151,12 @@ const SignInSide = (props) => {
   return (
     <GoogleOAuthProvider clientId="208703321397-8bqc7ltmj3ej3md87hnmkg723hkpgsge.apps.googleusercontent.com">
       <ThemeProvider theme={theme}>
-        <Grid container component="main" sx={{ height: "100vh", ml: 10 }}>
+        <Grid container /*component="main" sx={{ height: "100vh", ml: 10 }}*/>
           <CssBaseline />
           <Grid
             item
             xs={12}
-            sm={8}
+            sm={6}
             md={4}
             component={Paper}
             elevation={0}
@@ -171,29 +171,26 @@ const SignInSide = (props) => {
                 alignItems: "center",
               }}
             >
-              {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
               <Typography component="h1" variant="h3">
                 WELCOME !
               </Typography>
-              <Grid item sx={{ margin: 2 }}>
+              {/* <Grid item sx={{ margin: 2 }}> */}
                 <Typography component="h3" variant="body1">
                   Already have an account? &nbsp;<Link to="/login">Login</Link>
                 </Typography>
-              </Grid>
-              <Grid item sx={{ margin: 2 }}>
+              {/* </Grid> */}
+              {/* <Grid item sx={{ margin: 2 }}> */}
                 <Typography component="h3" variant="h5">
                   Sign up with
                 </Typography>
-              </Grid>
+              {/* </Grid> */}
               <Box
                 sx={{
                   display: "flex",
                   margin: 2,
                 }}
               >
-                <Grid
+                <Box
                   item
                   sx={{
                     // border: 3,
@@ -227,8 +224,8 @@ const SignInSide = (props) => {
                     logo_alignment="center"
                     size="large"
                   />
-                </Grid>
-                <Grid
+                </Box>
+                <Box
                   item
                   sx={{
                     border: 3,
@@ -248,7 +245,7 @@ const SignInSide = (props) => {
                   onFailure={responseGoogle}
                   cookiePolicy={"single_host_origin"}
                 /> */}
-                </Grid>
+                </Box>
               </Box>
               <Box sx={{width : 400}}>
                 <div className="block">
@@ -344,8 +341,14 @@ const SignInSide = (props) => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={false} sm={4} md={8} sx={{ mt: 10 }}>
+          <Grid item xs={0} sm={6} md={8} sx={{ mt: 10 }}>
+          <Box
+          component={Grid}
+          item
+          display={{ xs: "none", sm : "flex", sx : "flex" }}
+        >
             <img src={bg_1} />
+          </Box>
           </Grid>
           <Grid item xs={12} sm={8} md={4}>
             <Snackbar
